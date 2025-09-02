@@ -1,10 +1,37 @@
+import { ContaCorrente } from './src/model/ContaCorrente'
+import { colors } from './src/util/Colors'
+import { Conta } from './src/model/Conta'
 import recebe = require('readline-sync')
-import { colors } from './src/util/colors' 
+import { ContaPoupanca } from './src/model/ContaPoupanca'
 
 export function main() { //criando a função main. Função principal do projeto. Export torna a função acessível fora da classe menu
 
 
     let escolha: number
+
+    //Objeto da classe conta (testando)
+    const conta: Conta = new Conta(1, 123, 1, 'Renata', 10000)
+    conta.visualizar()
+    conta.sacar(10500)
+    conta.visualizar()
+    conta.depositar(5000)
+    conta.visualizar()
+
+    //Objeto da classe conta corrente (testando)
+    const contacorrente: ContaCorrente = new ContaCorrente(2, 123, 1, 'Marina', 15000, 1000)
+    contacorrente.visualizar()
+    contacorrente.sacar(2000)
+    contacorrente.visualizar()
+    contacorrente.depositar(1000)
+    contacorrente.visualizar()
+
+    //Objeto da classe conta poupança (testando)
+    const contapoupanca: ContaPoupanca = new ContaPoupanca(3, 123, 2, 'Vilmo', 1000, 10)
+    contapoupanca.visualizar()
+    contapoupanca.sacar(200)
+    contapoupanca.visualizar()
+    contapoupanca.depositar(1000)
+    contapoupanca.visualizar()
 
     while (true) {
 
