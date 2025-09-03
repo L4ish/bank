@@ -1,28 +1,17 @@
 import { ContaCorrente } from './src/model/ContaCorrente'
+import { ContaPoupanca } from './src/model/ContaPoupanca'
 import { colors } from './src/util/Colors'
 import recebe = require('readline-sync')
-import { ContaPoupanca } from './src/model/ContaPoupanca'
+import { ContaController } from './src/controller/ContaController'
 
 export function main() { //criando a função main. Função principal do projeto. Export torna a função acessível fora da classe menu
 
+    //Instância da classe ContaController
+    let contas: ContaController = new ContaController()
 
-    let escolha: number
-
-    //Objeto da classe conta corrente (testando)
-    const contacorrente: ContaCorrente = new ContaCorrente(2, 123, 1, 'Marina', 15000, 1000)
-    contacorrente.visualizar()
-    contacorrente.sacar(2000)
-    contacorrente.visualizar()
-    contacorrente.depositar(1000)
-    contacorrente.visualizar()
-
-    //Objeto da classe conta poupança (testando)
-    const contapoupanca: ContaPoupanca = new ContaPoupanca(3, 123, 2, 'Vilmo', 1000, 10)
-    contapoupanca.visualizar()
-    contapoupanca.sacar(200)
-    contapoupanca.visualizar()
-    contapoupanca.depositar(1000)
-    contapoupanca.visualizar()
+    let escolha: number, numero: number, agencia: number, tipo: number, saldo: number, aniversario: number, limite: number
+    let titular: string
+    const tiposContas = ['Conta Corrente', 'Conta Poupanca']
 
     while (true) {
 
@@ -46,7 +35,7 @@ export function main() { //criando a função main. Função principal do projet
 
 
         console.log('Digite a opção desejada: ')
-        escolha = recebe.questionInt("")
+        escolha = recebe.questionInt('')
 
 
         if (escolha === 9) { //finaliza o loop
@@ -58,37 +47,72 @@ export function main() { //criando a função main. Função principal do projet
         
         switch (escolha) {
             case 1:
-                console.log(colors.fg.magenta + '\nCriar Conta\n')
+                console.log(colors.fg.magenta + '\nCriar Conta\n', colors.reset)
+
+                console.log('Digite o número da agência: ')
+                agencia = recebe.questionInt('')
+
+                console.log('Digite o nome do Titular da conta: ')
+                titular = recebe.question('')
+
+                console.log('Digite o tipo da conta: ')
+                tipo = recebe.keyInSelect(tiposContas,'', {cancel: false}) + 1
+
+                console.log('Saldo da conta (R$): ')
+                saldo = recebe.questionFloat('')
+
+                switch(tipo) {
+                    case 1:
+                        console.log('Digite o limite da conta (R$): ')
+                        limite = recebe.questionFloat('')
+                        contas.cadastrar(new ContaCorrente(contas.gerarNumero(), agencia, tipo, titular, saldo, limite))
+                        break
+                    case 2:
+                        console.log('Digite o dia do aniversário da Conta Poupança: ')
+                        aniversario = recebe.questionInt('')
+                        contas.cadastrar(new ContaPoupanca(contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario))
+                        break
+                    }
+
                 keyPress()
                 break;
+
             case 2:
-                console.log(colors.fg.magenta + '\nListar todas as Contas\n')
+                console.log(colors.fg.magenta + '\nListar todas as Contas\n', colors.reset)
+                contas.listarTodas()
                 keyPress()
                 break;
+
             case 3:
                 console.log(colors.fg.magenta + '\nConsultar dados da Conta - por número\n')
                 keyPress()
                 break;
+
             case 4:
                 console.log(colors.fg.magenta + '\nAtualizar dados da Conta\n')
                 keyPress()
                 break;
+
             case 5:
                 console.log(colors.fg.magenta + '\nApagar uma Conta\n')
                 keyPress()
                 break;
+
             case 6:
                 console.log(colors.fg.magenta + '\nSaque\n')
                 keyPress()
                 break;
+
             case 7:
                 console.log(colors.fg.magenta + '\nDepósito\n')
                 keyPress()
                 break;
+
             case 8:
                 console.log(colors.fg.magenta + '\nTransferência entre Contas\n')
                 keyPress()
                 break
+                
             default:
                 console.log(colors.fg.magenta + '\nOpção Inválida!\n')
                 keyPress()

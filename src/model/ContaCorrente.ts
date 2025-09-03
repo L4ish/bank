@@ -26,6 +26,7 @@ export class ContaCorrente extends Conta {
             console.log('\nSaldo insuficiente!')
             return false
         }
+//acesso ao método get saldo, visando que _saldo é privado e da classe mãe. Onde o método público get, consegue acessar o atributo privado _saldo e usar no saldo. 
         this.saldo = this.saldo - valor
         return true
     }
