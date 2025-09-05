@@ -9,7 +9,7 @@ export function main() { //criando a função main. Função principal do projet
     //Instância da classe ContaController
     let contas: ContaController = new ContaController()
 
-    let escolha: number, numero: number, agencia: number, tipo: number, saldo: number, aniversario: number, limite: number
+    let escolha: number, numero: number, agencia: number, tipo: number, saldo: number, aniversario: number, limite: number, valor: number, numeroDestino: number
     let titular: string
     const tiposContas = ['Conta Corrente', 'Conta Poupanca']
 
@@ -47,7 +47,7 @@ export function main() { //criando a função main. Função principal do projet
         
         switch (escolha) {
             case 1:
-                console.log(colors.fg.magenta + '\nCriar Conta\n', colors.reset)
+                console.log(colors.fg.magenta + '\nCriar Conta\n' + colors.reset)
 
                 console.log('Digite o número da agência: ')
                 agencia = recebe.questionInt('')
@@ -78,38 +78,112 @@ export function main() { //criando a função main. Função principal do projet
                 break;
 
             case 2:
-                console.log(colors.fg.magenta + '\nListar todas as Contas\n', colors.reset)
+                console.log(colors.fg.magenta + '\nListar todas as Contas\n' + colors.reset)
                 contas.listarTodas()
                 keyPress()
                 break;
 
             case 3:
-                console.log(colors.fg.magenta + '\nConsultar dados da Conta - por número\n')
+                console.log(colors.fg.magenta + '\nConsultar dados da Conta - por número\n' + colors.reset)
+                console.log('Digite o número da Conta que deseja encontrar: ')
+                numero = recebe.questionInt('')
+                contas.procurarPorNumero(numero)
+
                 keyPress()
                 break;
 
             case 4:
-                console.log(colors.fg.magenta + '\nAtualizar dados da Conta\n')
+                console.log(colors.fg.magenta + '\nAtualizar dados da Conta\n' + colors.reset)
+                
+                console.log('Digite o número da conta que deseja atualizar:')
+                numero = recebe.questionInt('')
+
+                let conta = contas.buscarNoArray(numero)
+
+                if (conta != null) {
+                    console.log('Digite o número da agência: ')
+                    agencia = recebe.questionInt('')
+                    
+                    console.log('Digite o nome do titular da conta: ')
+                    titular = recebe.question('')
+
+                    tipo = conta.tipo
+
+                    console.log('\nDigite o Saldo da conta (R$): ')
+                    saldo = recebe.questionFloat('')
+
+                    switch(tipo){
+                        case 1:
+                            console.log('Digite o limite da conta (R$): ')
+                            limite = recebe.questionFloat('')
+                            contas.atualizar (new ContaCorrente (numero, agencia, tipo, titular, saldo, limite))
+                            break
+                        case 2:
+                            console.log('Digite o dia do aniversário da Conta Poupança: ')
+                            aniversario = recebe.questionInt('')
+                            contas.atualizar(new ContaPoupanca(numero, agencia, tipo, titular, saldo, aniversario))
+                            break
+                    }
+                } else {
+                    console.log(colors.bg.cyan, '\nA conta número ' + numero + 'não foi encontrada!', colors.reset)
+                }
+
                 keyPress()
                 break;
 
             case 5:
-                console.log(colors.fg.magenta + '\nApagar uma Conta\n')
+                console.log(colors.fg.magenta + '\nApagar uma Conta\n' + colors.reset)
+
+                console.log('Digite o número da Conta: ')
+                numero = recebe.questionInt('')
+                contas.deletar(numero)
+
                 keyPress()
                 break;
 
             case 6:
-                console.log(colors.fg.magenta + '\nSaque\n')
+                console.log(colors.fg.magenta + '\nSaque\n' + colors.reset)
+                
+                console.log('Digite o número da conta:')
+                numero = recebe.questionInt('')
+
+                console.log('Digite o valor do saque (R$): ')
+                valor = recebe.questionFloat('')
+
+                contas.sacar(numero, valor)
+
                 keyPress()
                 break;
 
             case 7:
-                console.log(colors.fg.magenta + '\nDepósito\n')
+                console.log(colors.fg.magenta + '\nDepósito\n' + colors.reset)
+
+                console.log('Digite o número da conta: ')
+                numero = recebe.questionInt('')
+
+                console.log('Digite o valor do Depósito (R$): ')
+                valor = recebe.questionFloat('')
+
+                contas.depositar(numero, valor)
+
+
                 keyPress()
                 break;
 
             case 8:
-                console.log(colors.fg.magenta + '\nTransferência entre Contas\n')
+                console.log(colors.fg.magenta + '\nTransferência entre Contas\n' + colors.reset)
+
+                console.log('Digite o número da conta de origem: ')
+                numero = recebe.questionInt('')
+
+                console.log('Digite o número da conta de destino: ')
+                numeroDestino = recebe.questionInt('')
+
+                console.log('Digite o valor do Depósito (R$): ')
+                valor = recebe.questionFloat('')
+
+                contas.transferir(numero, numeroDestino, valor)
+
                 keyPress()
                 break
                 
